@@ -1,0 +1,241 @@
+
+****** PlanAhead v14.7 (64-bit)
+  **** Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
+    ** Copyright 1986-1999, 2001-2013 Xilinx, Inc. All Rights Reserved.
+
+INFO: [Common 17-78] Attempting to get a license: PlanAhead
+INFO: [Common 17-290] Got license for PlanAhead
+INFO: [Common 17-86] Your PlanAhead license expires in -530 day(s)
+INFO: [Device 21-36] Loading parts and site information from C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/arch.xml
+Parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+Finished parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+start_gui
+source C:/XilinxRun/FPGA_HighDRADC_V1/pa.fromHdl.tcl
+# create_project -name FPGA_HighDRADC_V1 -dir "C:/XilinxRun/FPGA_HighDRADC_V1/planAhead_run_1" -part xc6slx45fgg484-2
+# set_param project.pinAheadLayout yes
+# set srcset [get_property srcset [current_run -impl]]
+# set_property target_constrs_file "top_HighDRADC.ucf" [current_fileset -constrset]
+Adding file 'C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf' to fileset 'constrs_1'
+# add_files [list {ipcore_dir/fifo.ngc}]
+# add_files [list {okCoreHarness.ngc}]
+# set hdlfile [add_files [list {ScanChain.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# add_files [list {okWireOut.ngc}]
+# add_files [list {okWireIn.ngc}]
+# set hdlfile [add_files [list {okLibrary.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# add_files [list {okBTPipeOut.ngc}]
+# set hdlfile [add_files [list {ipcore_dir/fifo.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {top_HighDRADC.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set_property top top_HighDRADC $srcset
+# add_files [list {top_HighDRADC.ucf}] -fileset [get_property constrset [current_run]]
+# add_files [list {ipcore_dir/fifo.ncf}] -fileset [get_property constrset [current_run]]
+# open_rtl_design -part xc6slx45fgg484-2
+Using Verific elaboration
+Parsing VHDL file "C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/lib/synplify/synattr.vhd" into library synplify
+Analyzing Verilog file "C:/XilinxRun/FPGA_HighDRADC_V1/ScanChain.v" into library work
+Analyzing Verilog file "C:/XilinxRun/FPGA_HighDRADC_V1/okLibrary.v" into library work
+Analyzing Verilog file "C:/XilinxRun/FPGA_HighDRADC_V1/ipcore_dir/fifo.v" into library work
+Analyzing Verilog file "C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.v" into library work
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design okCoreHarness.ngc ...
+WARNING:NetListWriters:298 - No output is written to okCoreHarness.xncf,
+   ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file okCoreHarness.edif ...
+ngc2edif: Total memory usage is 84464 kilobytes
+
+Reading core file 'C:/XilinxRun/FPGA_HighDRADC_V1/okCoreHarness.ngc' for (cell view 'okCoreHarness', library 'work', file 'okLibrary.v')
+Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okCoreHarness.edif]
+Finished Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okCoreHarness.edif]
+CRITICAL WARNING: [Designutils 20-1022] Could not resolve non-primitive black box cell 'TFIFO64x8a_64x8b' instantiated in module 'core0/core0/a0/cb0'.
+Resolution: File names need to match cell names: an EDIF definition will be found in TFIFO64x8a_64x8b.edf; a HDL definition may be placed in any Verilog/VHDL file.
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design okWireIn.ngc ...
+WARNING:NetListWriters:298 - No output is written to okWireIn.xncf, ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file okWireIn.edif ...
+ngc2edif: Total memory usage is 81392 kilobytes
+
+Reading core file 'C:/XilinxRun/FPGA_HighDRADC_V1/okWireIn.ngc' for (cell view 'okWireIn', library 'work', file 'okLibrary.v')
+Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okWireIn.edif]
+Finished Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okWireIn.edif]
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design okWireOut.ngc ...
+WARNING:NetListWriters:298 - No output is written to okWireOut.xncf, ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file okWireOut.edif ...
+ngc2edif: Total memory usage is 81392 kilobytes
+
+Reading core file 'C:/XilinxRun/FPGA_HighDRADC_V1/okWireOut.ngc' for (cell view 'okWireOut', library 'work', file 'okLibrary.v')
+Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okWireOut.edif]
+Finished Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okWireOut.edif]
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design okBTPipeOut.ngc ...
+WARNING:NetListWriters:298 - No output is written to okBTPipeOut.xncf, ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file okBTPipeOut.edif ...
+ngc2edif: Total memory usage is 81584 kilobytes
+
+Reading core file 'C:/XilinxRun/FPGA_HighDRADC_V1/okBTPipeOut.ngc' for (cell view 'okBTPipeOut', library 'work', file 'okLibrary.v')
+Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okBTPipeOut.edif]
+Finished Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/okBTPipeOut.edif]
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design fifo.ngc ...
+WARNING:NetListWriters:298 - No output is written to fifo.xncf, ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file fifo.edif ...
+ngc2edif: Total memory usage is 86832 kilobytes
+
+Reading core file 'C:/XilinxRun/FPGA_HighDRADC_V1/ipcore_dir/fifo.ngc' for (cell view 'fifo', library 'work', file 'fifo.v')
+Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/fifo.edif]
+Finished Parsing EDIF File [./.Xil/PlanAhead-8716-Edwin-PC/ngc2edif/fifo.edif]
+INFO: [Netlist 29-17] Analyzing 95 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+Loading clock regions from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/ClockRegion.xml
+Loading clock buffers from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/ClockBuffers.xml
+Loading package pin functions from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/PinFunctions.xml...
+Loading package from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/fgg484/Package.xml
+Loading io standards from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/IOStandards.xml
+Loading device configuration modes from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/ConfigModes.xml
+Loading list of drcs for the architecture : C:/Xilinx/14.7/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/drc.xml
+Parsing UCF File [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'enableb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:153]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'enableb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:153]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'enableb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:153]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'enableb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:153]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'rstb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:154]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'rstb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:154]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'rstb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:154]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'rstb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:154]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'din' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:155]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'din' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:155]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'din' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:155]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'din' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:155]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'dout' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:156]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'dout' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:156]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'dout' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:156]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'dout' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:156]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'adc_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:158]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'adc_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:158]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'adc_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:158]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'adc_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:158]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'syncb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:159]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'syncb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:159]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'syncb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:159]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'syncb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:159]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk1' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:160]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk1' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:160]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk1' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:160]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk1' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:160]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk2' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:161]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk2' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:161]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk2' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:161]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'clk2' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:161]
+INFO: [Constraints 18-98] IO constraint IOSTANDARD with a setting of LVCMOS33 for net clk_data will not be propagated through the buffer. The constraint should be associated with the net that is connected to the top level port. [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:164]
+INFO: [Constraints 18-98] IO constraint SLEW with a setting of SLOW for net clk_data will not be propagated through the buffer. The constraint should be associated with the net that is connected to the top level port. [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:164]
+INFO: [Constraints 18-98] IO constraint DRIVE with a setting of 4 for net clk_data will not be propagated through the buffer. The constraint should be associated with the net that is connected to the top level port. [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:164]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'SDI' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:167]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'SDI' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:167]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'RDAC_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:168]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'RDAC_csb' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:168]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'RDAC_clk' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:169]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'RDAC_clk' [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf:169]
+Finished Parsing UCF File [C:/XilinxRun/FPGA_HighDRADC_V1/top_HighDRADC.ucf]
+INFO: [Designutils 20-20] Invalid constraints found, use command 'write_ucf -constraints invalid <file>' to save all the invalid constraints to a file
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 95 instances were transformed.
+  IOBUF => IOBUF (OBUFT, IBUF): 33 instances
+  LUT6_2 => LUT6_2 (LUT6, LUT5): 50 instances
+  RAM128X1S => RAM128X1S (RAMS64E, RAMS64E, MUXF7): 8 instances
+  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 4 instances
+
+Phase 0 | Netlist Checksum: 279bbb96
+open_rtl_design: Time (s): elapsed = 00:00:22 . Memory (MB): peak = 657.762 ; gain = 228.816
+update_compile_order -fileset sim_1
+set_property iostandard LVCMOS25 [get_ports [list s_chipout_m]]
+set_property is_loc_fixed false [get_ports [list  okAA]]
+set_property is_loc_fixed true [get_ports [list  okAA]]
+startgroup
+set_property package_pin J19 [get_ports sc_clk]
+endgroup
+set_property package_pin "" [get_ports [list  sc_data_m]]
+startgroup
+set_property package_pin G20 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin G22 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin E20 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin G22 [get_ports s_chipout_p]
+endgroup
+set_property package_pin "" [get_ports [list  sc_data_m]]
+startgroup
+set_property package_pin F20 [get_ports sc_data_p]
+endgroup
+startgroup
+set_property package_pin U20 [get_ports sc_data_m]
+endgroup
+startgroup
+set_property package_pin H20 [get_ports sc_load]
+endgroup
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_m]]
+set_property iostandard LVCMOS33 [get_ports [list okAA]]
+undo
+INFO: [Common 17-17] undo 'set_property iostandard LVCMOS33 [get_ports [list okAA]]'
+undo
+INFO: [Common 17-17] undo 'set_property iostandard LVCMOS33 [get_ports [list s_chipout_m]]'
+undo
+INFO: [Common 17-17] undo 'endgroup'
+INFO: [Common 17-17] undo 'set_property package_pin H20 [get_ports sc_load]'
+INFO: [Common 17-17] undo 'startgroup'
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_p]]
+set_property iostandard LVCMOS33 [get_ports [list sc_clk]]
+set_property iostandard LVCMOS33 [get_ports [list sc_data_m]]
+set_property iostandard LVCMOS33 [get_ports [list sc_data_p]]
+set_property iostandard LVCMOS33 [get_ports [list sc_load]]
+set_property drive 2 [get_ports [list okAA]]
+set_property drive 2 [get_ports [list clk_o]]
+set_property drive 2 [get_ports [list sc_clk]]
+set_property drive 2 [get_ports [list sc_data_m]]
+set_property drive 2 [get_ports [list sc_data_p]]
+set_property drive 2 [get_ports [list sc_load]]
+save_constraints
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_m]]
+startgroup
+set_property package_pin H20 [get_ports sc_load]
+endgroup
+save_constraints
+exit
+ERROR: [Common 17-39] 'stop_gui' failed due to earlier errors.
+INFO: [Common 17-206] Exiting PlanAhead at Wed Apr 13 11:13:13 2016...
+INFO: [Common 17-83] Releasing license: PlanAhead

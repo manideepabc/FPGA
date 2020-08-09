@@ -1,0 +1,62 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
+# Start of session at: Wed Apr 13 10:56:10 2016
+# Process ID: 8716
+# Log file: C:/XilinxRun/FPGA_HighDRADC_V1/planAhead_run_1/planAhead.log
+# Journal file: C:/XilinxRun/FPGA_HighDRADC_V1/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source C:/XilinxRun/FPGA_HighDRADC_V1/pa.fromHdl.tcl
+update_compile_order -fileset sim_1
+set_property iostandard LVCMOS25 [get_ports [list s_chipout_m]]
+set_property is_loc_fixed false [get_ports [list  okAA]]
+set_property is_loc_fixed true [get_ports [list  okAA]]
+startgroup
+set_property package_pin J19 [get_ports sc_clk]
+endgroup
+set_property package_pin "" [get_ports [list  sc_data_m]]
+startgroup
+set_property package_pin G20 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin G22 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin E20 [get_ports s_chipout_m]
+endgroup
+startgroup
+set_property package_pin G22 [get_ports s_chipout_p]
+endgroup
+set_property package_pin "" [get_ports [list  sc_data_m]]
+startgroup
+set_property package_pin F20 [get_ports sc_data_p]
+endgroup
+startgroup
+set_property package_pin U20 [get_ports sc_data_m]
+endgroup
+startgroup
+set_property package_pin H20 [get_ports sc_load]
+endgroup
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_m]]
+set_property iostandard LVCMOS33 [get_ports [list okAA]]
+undo
+undo
+undo
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_p]]
+set_property iostandard LVCMOS33 [get_ports [list sc_clk]]
+set_property iostandard LVCMOS33 [get_ports [list sc_data_m]]
+set_property iostandard LVCMOS33 [get_ports [list sc_data_p]]
+set_property iostandard LVCMOS33 [get_ports [list sc_load]]
+set_property drive 2 [get_ports [list okAA]]
+set_property drive 2 [get_ports [list clk_o]]
+set_property drive 2 [get_ports [list sc_clk]]
+set_property drive 2 [get_ports [list sc_data_m]]
+set_property drive 2 [get_ports [list sc_data_p]]
+set_property drive 2 [get_ports [list sc_load]]
+save_constraints
+set_property iostandard LVCMOS33 [get_ports [list s_chipout_m]]
+startgroup
+set_property package_pin H20 [get_ports sc_load]
+endgroup
+save_constraints

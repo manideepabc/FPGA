@@ -1,0 +1,29 @@
+Command line:
+   chip_reset_tb_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  52592
+
+Tue Apr 19 12:40:44 2016
+
+
+ Elaboration Time: 0.0312 sec
+
+ Current Memory Usage: 666.546 Meg
+
+ Total Signals          : 22
+ Total Nets             : 50
+ Total Signal Drivers   : 14
+ Total Blocks           : 3
+ Total Primitive Blocks : 2
+ Total Processes        : 19
+ Total Traceable Variables  : 30
+ Total Scalar Nets and Variables : 207
+Total Line Count : 54
+
+ Total Simulation Time: 0.0624 sec
+
+ Current Memory Usage: 666.546 Meg
+
+Tue Apr 19 15:12:14 2016
+
