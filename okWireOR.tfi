@@ -1,0 +1,10 @@
+
+
+
+// Instantiate the module
+okWireOR instance_name (
+    .okEH(okEH), 
+    .okEHx(okEHx)
+    );
+
+

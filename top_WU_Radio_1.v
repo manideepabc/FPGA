@@ -61,7 +61,7 @@ module top_WU_Radio_1(
 //  output wire preset,
 	 output wire T_1,
 	 output wire T_0,
-	 output wire WU_serviced,
+	 output wire trig_to_siggen,
 //	 output wire comp_in,
 //  output wire duty_cycle
 	 
@@ -124,7 +124,8 @@ wire [31:0]  ep03wire;
 wire [31:0]  ep04wire;
 wire [31:0]  ep05wire;
 wire [31:0]  ep06wire;
-//wire [31:0]  ep07wire;
+wire [31:0]  ep07wire;
+
 //wire [31:0]  ep08wire;
 //wire [31:0]  ep09wire;
 //wire [31:0]  ep0Awire;
@@ -146,13 +147,24 @@ reg [31:0]   ep24wire;
 reg [31:0]   ep25wire;
 reg [31:0]   ep26wire;
 reg [31:0]   ep27wire;
+
+reg [31:0]   ep28wire;
+reg [31:0]   ep29wire;
+reg [31:0]   ep2awire;
+reg [31:0]   ep2bwire;
+
 wire [19:0] count;
+wire [19:0] total_triggers;
+wire [19:0] TP;
+wire [19:0] FP;
+wire [19:0] missed_triggers;
+
 wire WU_valid;
-//wire WU_serviced;
+wire WU_serviced;
 wire data_clk_enb;
 
 // Instantiate the okHost and connect endpoints.
-wire [65*8-1:0]  okEHx;
+wire [65*12-1:0]  okEHx;
 
 okHost okHI(
 	.okUH(okUH),
@@ -164,7 +176,7 @@ okHost okHI(
 	.okEH(okEH)
 );
 
-okWireOR # (.N(8)) wireOR (okEH, okEHx);
+okWireOR # (.N(12)) wireOR (okEH, okEHx);
 
 // Interface with PC
 okWireIn     wi00(.okHE(okHE),.ep_addr(8'h00), .ep_dataout(ep00wire));
@@ -174,6 +186,8 @@ okWireIn     wi03(.okHE(okHE),.ep_addr(8'h03), .ep_dataout(ep03wire));
 okWireIn     wi04(.okHE(okHE),.ep_addr(8'h04), .ep_dataout(ep04wire));
 okWireIn     wi05(.okHE(okHE),.ep_addr(8'h05), .ep_dataout(ep05wire));
 okWireIn     wi06(.okHE(okHE),.ep_addr(8'h06), .ep_dataout(ep06wire));
+okWireIn     wi07(.okHE(okHE),.ep_addr(8'h07), .ep_dataout(ep07wire));
+
 okWireOut    wo20(.okHE(okHE), .okEH(okEHx[ 0*65 +: 65 ]), .ep_addr(8'h20), .ep_datain(ep20wire));
 okWireOut    wo21(.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h21), .ep_datain(ep21wire));
 okWireOut    wo22(.okHE(okHE), .okEH(okEHx[ 2*65 +: 65 ]), .ep_addr(8'h22), .ep_datain(ep22wire));
@@ -182,7 +196,17 @@ okWireOut    wo24(.okHE(okHE), .okEH(okEHx[ 4*65 +: 65 ]), .ep_addr(8'h24), .ep_
 okWireOut    wo25(.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'h25), .ep_datain(ep25wire));
 okWireOut    wo26(.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h26), .ep_datain(ep26wire));
 okWireOut    wo27(.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]), .ep_addr(8'h27), .ep_datain(ep27wire));
+
+// Following are for wakeup counts
+okWireOut    wo28(.okHE(okHE), .okEH(okEHx[ 8*65 +: 65 ]), .ep_addr(8'h28), .ep_datain(ep28wire));   //defined by Mani
+okWireOut    wo29(.okHE(okHE), .okEH(okEHx[ 9*65 +: 65 ]), .ep_addr(8'h29), .ep_datain(ep29wire));
+okWireOut    wo2a(.okHE(okHE), .okEH(okEHx[ 10*65 +: 65 ]), .ep_addr(8'h2a), .ep_datain(ep2awire));
+okWireOut    wo2b(.okHE(okHE), .okEH(okEHx[ 11*65 +: 65 ]), .ep_addr(8'h2b), .ep_datain(ep2bwire));
 //okWireOut    wo26(.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h26), .ep_datain(32'h12345678));
+
+
+// Transfer large data
+okPipeOut(.okHE(okHE), .okEH(okEHx[12*65+:65]), .ep_addr(8'ha3),.ep_datain(epA3pipe),.ep_read(epA3read));
 
 //okBTPipeOut  poA1(.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]),
 //		  .ep_addr(8'ha1), .ep_datain(pipeout), .ep_read(fifo_rd_en), .ep_blockstrobe(),  
@@ -196,7 +220,13 @@ always @ (posedge sc_done)	begin
 end
 always @ (posedge sys_clk) begin
 	ep27wire = {12'b0,count[19:0]};
+	ep28wire = {12'b0,total_triggers[19:0]};
+	ep29wire = {12'b0,TP[19:0]};
+	ep2awire = {12'b0,FP[19:0]};
+	ep2bwire = {12'b0,missed_triggers[19:0]};
 end
+
+
 //always @ (posedge sc_done)	begin
 //	ep24wire = {sc_out[35:20], sc_out[17:14], sc_out[11:0]};
 //	ep25wire = {sc_out[71:56], sc_out[53:50], sc_out[47:36]};
@@ -269,6 +299,22 @@ Sync Sync_1(
 	.T_1(T_1),
 	.WU_serviced(WU_serviced),
 	.data_clk_enb(data_clk_enb)
+);
+
+Siggen_trigger Siggen_trigger_1(
+	.clki(sys_clk),
+	.ep07wire(ep07wire),
+	.trig_to_siggen(trig_to_siggen)
+);
+
+WU_counter WU_counter_1(
+	.clki(sys_clk),
+	.wake_up(wake_up),
+	.trig_to_siggen(trig_to_siggen),
+	.total_triggers(total_triggers),
+	.TP(TP),
+	.FP(FP),
+	.missed_triggers(missed_triggers)
 );
 
 //Scan Chain

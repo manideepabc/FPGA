@@ -5,7 +5,7 @@
 // 
 // Create Date:    04/12/2016
 // Design Name: 
-// Module Name:    ScanChain
+// Module Name:    Siggen_trigger
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
