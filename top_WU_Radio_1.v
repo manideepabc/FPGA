@@ -124,7 +124,16 @@ wire [31:0]  ep03wire;
 wire [31:0]  ep04wire;
 wire [31:0]  ep05wire;
 wire [31:0]  ep06wire;
-wire [31:0]  ep07wire;
+wire [31:0]  ep07wire; // reset for every module
+wire [31:0] ep08wire;
+
+// Large data transfer wires
+/*wire fifowrite;
+wire fiforead;
+wire [31:0] datafromPC;
+wire [31:0] datatoPC;
+wire reset;
+wire [31:0] ep08wire;*/
 
 //wire [31:0]  ep08wire;
 //wire [31:0]  ep09wire;
@@ -153,18 +162,23 @@ reg [31:0]   ep29wire;
 reg [31:0]   ep2awire;
 reg [31:0]   ep2bwire;
 
+reg [31:0]   ep2cwire;
+reg [31:0]   ep2dwire;
+reg [31:0] ep2ewire;
+reg [31:0] ep2fwire;
+
 wire [19:0] count;
 wire [19:0] total_triggers;
 wire [19:0] TP;
 wire [19:0] FP;
 wire [19:0] missed_triggers;
-
+wire [31:0] WU_jitter; 
+wire [31:0] stage2_jitter;
 wire WU_valid;
-wire WU_serviced;
 wire data_clk_enb;
 
 // Instantiate the okHost and connect endpoints.
-wire [65*12-1:0]  okEHx;
+wire [65*16-1:0]  okEHx;
 
 okHost okHI(
 	.okUH(okUH),
@@ -176,7 +190,7 @@ okHost okHI(
 	.okEH(okEH)
 );
 
-okWireOR # (.N(12)) wireOR (okEH, okEHx);
+okWireOR # (.N(16)) wireOR (okEH, okEHx);
 
 // Interface with PC
 okWireIn     wi00(.okHE(okHE),.ep_addr(8'h00), .ep_dataout(ep00wire));
@@ -204,9 +218,41 @@ okWireOut    wo2a(.okHE(okHE), .okEH(okEHx[ 10*65 +: 65 ]), .ep_addr(8'h2a), .ep
 okWireOut    wo2b(.okHE(okHE), .okEH(okEHx[ 11*65 +: 65 ]), .ep_addr(8'h2b), .ep_datain(ep2bwire));
 //okWireOut    wo26(.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h26), .ep_datain(32'h12345678));
 
+// Transfer data on every probe from computer
+okWireIn     wi08(.okHE(okHE),.ep_addr(8'h08), .ep_dataout(ep08wire));
+
+okWireOut    wo2c(.okHE(okHE), .okEH(okEHx[ 12*65 +: 65 ]), .ep_addr(8'h2c), .ep_datain(ep2cwire)); // first 16 bits
+okWireOut    wo2d(.okHE(okHE), .okEH(okEHx[ 13*65 +: 65 ]), .ep_addr(8'h2d), .ep_datain(ep2dwire)); // next 16 bits
+okWireOut    wo2e(.okHE(okHE), .okEH(okEHx[ 14*65 +: 65 ]), .ep_addr(8'h2e), .ep_datain(ep2ewire)); // first 16 bits
+okWireOut    wo2f(.okHE(okHE), .okEH(okEHx[ 15*65 +: 65 ]), .ep_addr(8'h2f), .ep_datain(ep2fwire)); // first 16 bits
+
+/*reg [31:0] data1toPC;
+initial begin
+	data1toPC[0] = 55;
+	data1toPC[1] = 256;
+end
+
+always @* begin
+	data1toPC[index] = WU_jitter;
+end*/
+
+always @ (posedge sys_clk) begin
+	ep27wire = {12'b0,count[19:0]};
+	ep28wire = {12'b0,total_triggers[19:0]};
+	ep29wire = {12'b0,TP[19:0]};
+	ep2awire = {12'b0,FP[19:0]};
+	ep2bwire = {12'b0,missed_triggers[19:0]};
+//	ep2cwire = {12'b0,data1toPC[ep07wire][15:0]};
+//	ep2dwire = {12'b0,data1toPC[ep07wire][31:16]};
+	ep2cwire = {16'b0,WU_jitter[15:0]};
+	ep2dwire = {16'b0,WU_jitter[31:16]};
+	
+	ep2ewire = {16'b0,stage2_jitter[15:0]};
+	ep2fwire = {16'b0,stage2_jitter[31:16]};
+end
 
 // Transfer large data
-okPipeOut(.okHE(okHE), .okEH(okEHx[12*65+:65]), .ep_addr(8'ha3),.ep_datain(epA3pipe),.ep_read(epA3read));
+//okPipeOut pipeA3(.okHE(okHE), .okEH(okEHx[12*65+:65]), .ep_addr(8'hA3),.ep_datain(datatoPC),.ep_read(fiforead));
 
 //okBTPipeOut  poA1(.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]),
 //		  .ep_addr(8'ha1), .ep_datain(pipeout), .ep_read(fifo_rd_en), .ep_blockstrobe(),  
@@ -218,13 +264,7 @@ always @ (posedge sc_done)	begin
 	ep21wire = {sc_out[49:18]};
 	ep22wire = {14'b0, sc_out[17:0]};
 end
-always @ (posedge sys_clk) begin
-	ep27wire = {12'b0,count[19:0]};
-	ep28wire = {12'b0,total_triggers[19:0]};
-	ep29wire = {12'b0,TP[19:0]};
-	ep2awire = {12'b0,FP[19:0]};
-	ep2bwire = {12'b0,missed_triggers[19:0]};
-end
+
 
 
 //always @ (posedge sc_done)	begin
@@ -283,39 +323,44 @@ Sync Sync_1(
 	.data_clk_enb(data_clk_enb)
 );*/
 
-Trig Trig_1(
+/*Trig Trig_1(
 	.clki(sys_clk),
 	.wake_up(wake_up),
 	.WU_serviced(WU_serviced),
 	.count(count),
 	.WU_valid(WU_valid)
-);
+);*/
 
 Sync Sync_1(
 	.clki(sys_clk),
+	.wake_up(wake_up),
 	.comp_out(comp_out),
 	.WU_valid(WU_valid),
 	.T_0(T_0),
 	.T_1(T_1),
-	.WU_serviced(WU_serviced),
 	.data_clk_enb(data_clk_enb)
 );
 
 Siggen_trigger Siggen_trigger_1(
 	.clki(sys_clk),
-	.ep07wire(ep07wire),
+	.reset(ep07wire),
 	.trig_to_siggen(trig_to_siggen)
 );
 
 WU_counter WU_counter_1(
 	.clki(sys_clk),
 	.wake_up(wake_up),
+	.comp_out(comp_out),
+	.reset(ep07wire),
 	.trig_to_siggen(trig_to_siggen),
 	.total_triggers(total_triggers),
 	.TP(TP),
 	.FP(FP),
-	.missed_triggers(missed_triggers)
+	.missed_triggers(missed_triggers),
+	.WU_jitter(WU_jitter),
+	.stage2_jitter(stage2_jitter)
 );
+
 
 //Scan Chain
 //ScanChain ScanChain_1(

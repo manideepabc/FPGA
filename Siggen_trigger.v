@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Siggen_trigger(
     input wire clki,
-	 input wire [31:0] ep07wire,
+	 input wire [31:0] reset,
 	 output reg trig_to_siggen
 	 );
 
@@ -28,16 +28,19 @@ module Siggen_trigger(
 	reg [31:0] trig_cnt = 32'b0;
 	reg trig_enb;
 	
+	reg[2:0] reset_buf;
+	wire reset_risingedge = (reset_buf[2:1] == 2'b01);
+	
    // generate clock with period 25ms == 40Hz
 	parameter M = 2500000;   	//SC_clk = 100/M MHz
 	
 	always @(posedge clki) begin
-		if (ep07wire[0] == 1) begin
+		reset_buf <= {reset_buf[1:0],reset[0]};
+		if (reset_risingedge == 1) begin
 			trig_enb <= 1;
 			trig_cnt <= 0;
-		end
-		else begin
-			trig_enb <= 0;
+			sys_clk_cnt <= 0;
+			trig_to_siggen <= 0;
 		end
 		
 		if (trig_enb == 1) begin
@@ -52,7 +55,7 @@ module Siggen_trigger(
 			end
 		end
 		
-		if (trig_cnt == 1000) begin
+		if (trig_cnt == 1) begin
 			trig_enb <= 0;
 		end
 	end
