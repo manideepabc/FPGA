@@ -109,7 +109,7 @@ module Sync(
 		T_0 <= 0;
 		//T_1 <= !T_1;
 		
-		if (data_clk_cnt < 192) begin
+		if (data_clk_cnt < 432) begin
 			T_1 <= 0;
 		end
 		else begin
