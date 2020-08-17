@@ -43,12 +43,13 @@ module Sync(
 	reg [19:0] tim_cnt;
 	//reg data_clk_enb;
 	reg data_clk;
+	reg WU_serviced = 1;
 	
 	always @(posedge clki) begin
 	   wakeup_buf <= {wakeup_buf[1:0], wake_up};		
 		sync_buf <= {sync_buf[1:0], comp_out};
 		
-		if(wakeup_risingedge) begin
+		if(wakeup_risingedge & WU_serviced) begin
 			WU_valid <= 1;
 			tim_count <= 0;
 			tim_enb <= 1;
@@ -68,6 +69,7 @@ module Sync(
 			sys_clk_cnt <= datarate_div/2 - 1;
 			data_clk_cnt <= 0;
 			WU_valid <= 0; //--once wakeup is serviced and finding the first rising edge on the stage 2, do not care about any more rising edges(they are noisy spikes)
+			WU_serviced <= 0;
 		end
 		
 		//1MHz data clock
@@ -83,37 +85,51 @@ module Sync(
 			end
 		end
 			
-		if(data_clk_cnt == 1000) begin
+		if(data_clk_cnt == 1216) begin
 				data_clk_enb <= 0;
 				data_clk_cnt <= 0;
+				WU_serviced <= 1;
 		end
 	end
 
 	
-/*	reg data_bits[0:999];
-	
+	reg data_bits[0:1215];
+	reg [31:0]temp;
 	integer i;
 	initial begin
-		for(i=0;i<1000;i=i+1) begin
-			if (i<192) begin
+		for(i=0;i<1216;i=i+1) begin
+			if (i < 432) begin
 				data_bits[i] = 0;
 			end
 			else begin
-				data_bits[i] = 1;
+				temp = (i-432)%8;
+				if (temp < 4) begin
+					data_bits[i] = 1;
+				end
+				else begin
+					data_bits[i] = 0;
+				end
 			end
 		end
-	end*/
-	
+	end
+	reg[7:0] scrambler_reg;
 	
 	always @(posedge data_clk) begin
 		T_0 <= 0;
 		//T_1 <= !T_1;
 		
 		if (data_clk_cnt < 432) begin
-			T_1 <= 0;
+			T_1 = 0;
+			scrambler_reg = 0;
 		end
-		else begin
-			T_1 <= !T_1;
+		else begin 
+			if (data_clk_cnt < 1200)begin
+				scrambler_reg = {scrambler_reg[6:0],T_1};
+				T_1 = data_bits[data_clk_cnt] ^ scrambler_reg[0] ^ scrambler_reg[3] ^ scrambler_reg[4] ^ scrambler_reg[6] ^ scrambler_reg[7];
+			end
+			else begin
+				T_1 = 0;
+			end
 		end
 	end
 	
