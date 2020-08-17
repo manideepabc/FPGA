@@ -28,7 +28,7 @@ module Sync(
 	 output reg data_clk_enb
 	 );
 
-	
+	initial WU_valid = 0;
 	reg[2:0] sync_buf;
 	reg[2:0] wakeup_buf;
 	reg [19:0] tim_count;
@@ -48,7 +48,7 @@ module Sync(
 	   wakeup_buf <= {wakeup_buf[1:0], wake_up};		
 		sync_buf <= {sync_buf[1:0], comp_out};
 		
-		if(wakeup_risingedge) begin
+		if(wakeup_risingedge & (WU_valid == 0)) begin
 			WU_valid <= 1;
 			tim_count <= 0;
 			tim_enb <= 1;
@@ -58,11 +58,12 @@ module Sync(
 		if (tim_enb) begin
 			tim_count <= tim_count + 1;
 		end
-		if(tim_count == 20000) begin
+		if(tim_count == 60000) begin
 			tim_enb <= 0;
+			WU_valid <= 0;
 		end
 		
-		if(sync_risingedge & WU_valid) begin
+		if(WU_valid & (tim_count == 25342)) begin
 			data_clk_enb <= 1;
 			data_clk <= 1'b0; // Initialize clock to 0.
 			sys_clk_cnt <= datarate_div/2 - 1;
