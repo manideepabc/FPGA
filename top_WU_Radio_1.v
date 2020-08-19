@@ -127,6 +127,8 @@ wire [31:0]  ep06wire;
 wire [31:0]  ep07wire; // reset for every module
 wire [31:0] ep08wire;
 wire [31:0] ep09wire;
+wire [31:0] ep0awire;
+
 // Large data transfer wires
 /*wire fifowrite;
 wire fiforead;
@@ -177,15 +179,18 @@ wire [31:0] stage2_jitter;
 wire WU_valid;
 wire data_clk_enb;
 
+reg use_stage2;
 reg [31:0] pkt_duration;
 reg [31:0] delay;
 initial begin
 	pkt_duration = 100;
 	delay = 100;
+	use_stage2 = 1;
 end
 always @(posedge sys_clk) begin
 	delay = ep08wire;
 	pkt_duration = ep09wire;
+	use_stage2 = ep0awire[0];
 end
 
 // Instantiate the okHost and connect endpoints.
@@ -346,6 +351,7 @@ Sync Sync_1(
 	.clki(sys_clk),
 	.wake_up(wake_up),
 	.comp_out(comp_out),
+	.use_stage2(use_stage2),
 	.pkt_duration(pkt_duration),
 	.delay(delay),
 	.WU_valid(WU_valid),
