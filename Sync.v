@@ -22,6 +22,8 @@ module Sync(
     input wire clki,
 	 input wire wake_up,
 	 input wire comp_out,
+	 input wire[31:0] pkt_duration,
+	 input wire[31:0] delay,
 	 output reg WU_valid,
 	 output reg T_0,
 	 output reg T_1,
@@ -31,16 +33,15 @@ module Sync(
 	
 	reg[2:0] sync_buf;
 	reg[2:0] wakeup_buf;
-	reg [19:0] tim_count;
+	reg [31:0] tim_count;
 	reg tim_enb;
 	
 	wire wakeup_risingedge = (wakeup_buf[2:1] ==2'b01);
 	wire sync_risingedge = (sync_buf[2:1] ==2'b01);
 	
 	parameter datarate_div = 100;   	//SC_clk = 100/M MHz
-	reg [19:0] sys_clk_cnt;
-	reg [19:0] data_clk_cnt;
-	reg [19:0] tim_cnt;
+	reg [31:0] sys_clk_cnt;
+	reg [31:0] data_clk_cnt;
 	//reg data_clk_enb;
 	reg data_clk;
 	reg WU_serviced = 1;
@@ -49,7 +50,7 @@ module Sync(
 	   wakeup_buf <= {wakeup_buf[1:0], wake_up};		
 		sync_buf <= {sync_buf[1:0], comp_out};
 		
-		if(wakeup_risingedge & WU_serviced) begin
+		if(wakeup_risingedge) begin  //
 			WU_valid <= 1;
 			tim_count <= 0;
 			tim_enb <= 1;
@@ -59,14 +60,18 @@ module Sync(
 		if (tim_enb) begin
 			tim_count <= tim_count + 1;
 		end
-		if(tim_count == 20000) begin
+/*		if (tim_count > 30000) begin
+			WU_valid <= 0;
+		end*/
+		if(tim_count == 1000000) begin
 			tim_enb <= 0;
+			WU_serviced <= 1;
 		end
 		
 		if(sync_risingedge & WU_valid) begin
 			data_clk_enb <= 1;
 			data_clk <= 1'b0; // Initialize clock to 0.
-			sys_clk_cnt <= datarate_div/2 - 1;
+			sys_clk_cnt <= datarate_div/2 - 1 - delay;  //delay is in 10ns step. So, delay = 10 means 100ns time delayed
 			data_clk_cnt <= 0;
 			WU_valid <= 0; //--once wakeup is serviced and finding the first rising edge on the stage 2, do not care about any more rising edges(they are noisy spikes)
 			WU_serviced <= 0;
@@ -85,7 +90,7 @@ module Sync(
 			end
 		end
 			
-		if(data_clk_cnt == 1216) begin
+		if(data_clk_cnt == pkt_duration) begin  //pkt_duration is in microsecond
 				data_clk_enb <= 0;
 				data_clk_cnt <= 0;
 				WU_serviced <= 1;
@@ -93,11 +98,11 @@ module Sync(
 	end
 
 	
-	reg data_bits[0:1215];
+	reg data_bits[0:4000];
 	reg [31:0]temp;
 	integer i;
 	initial begin
-		for(i=0;i<1216;i=i+1) begin
+		for(i=0;i<4000;i=i+1) begin
 			if (i < 432) begin
 				data_bits[i] = 0;
 			end
@@ -123,7 +128,7 @@ module Sync(
 			scrambler_reg = 0;
 		end
 		else begin 
-			if (data_clk_cnt < 1200)begin
+			if (data_clk_cnt < pkt_duration-32) begin
 				scrambler_reg = {scrambler_reg[6:0],T_1};
 				T_1 = data_bits[data_clk_cnt] ^ scrambler_reg[0] ^ scrambler_reg[3] ^ scrambler_reg[4] ^ scrambler_reg[6] ^ scrambler_reg[7];
 			end

@@ -126,7 +126,7 @@ wire [31:0]  ep05wire;
 wire [31:0]  ep06wire;
 wire [31:0]  ep07wire; // reset for every module
 wire [31:0] ep08wire;
-
+wire [31:0] ep09wire;
 // Large data transfer wires
 /*wire fifowrite;
 wire fiforead;
@@ -177,6 +177,17 @@ wire [31:0] stage2_jitter;
 wire WU_valid;
 wire data_clk_enb;
 
+reg [31:0] pkt_duration;
+reg [31:0] delay;
+initial begin
+	pkt_duration = 100;
+	delay = 100;
+end
+always @(posedge sys_clk) begin
+	delay = ep08wire;
+	pkt_duration = ep09wire;
+end
+
 // Instantiate the okHost and connect endpoints.
 wire [65*16-1:0]  okEHx;
 
@@ -201,6 +212,8 @@ okWireIn     wi04(.okHE(okHE),.ep_addr(8'h04), .ep_dataout(ep04wire));
 okWireIn     wi05(.okHE(okHE),.ep_addr(8'h05), .ep_dataout(ep05wire));
 okWireIn     wi06(.okHE(okHE),.ep_addr(8'h06), .ep_dataout(ep06wire));
 okWireIn     wi07(.okHE(okHE),.ep_addr(8'h07), .ep_dataout(ep07wire));
+okWireIn     wi08(.okHE(okHE),.ep_addr(8'h08), .ep_dataout(ep08wire));
+okWireIn     wi09(.okHE(okHE),.ep_addr(8'h09), .ep_dataout(ep09wire)); 
 
 okWireOut    wo20(.okHE(okHE), .okEH(okEHx[ 0*65 +: 65 ]), .ep_addr(8'h20), .ep_datain(ep20wire));
 okWireOut    wo21(.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h21), .ep_datain(ep21wire));
@@ -218,8 +231,6 @@ okWireOut    wo2a(.okHE(okHE), .okEH(okEHx[ 10*65 +: 65 ]), .ep_addr(8'h2a), .ep
 okWireOut    wo2b(.okHE(okHE), .okEH(okEHx[ 11*65 +: 65 ]), .ep_addr(8'h2b), .ep_datain(ep2bwire));
 //okWireOut    wo26(.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h26), .ep_datain(32'h12345678));
 
-// Transfer data on every probe from computer
-okWireIn     wi08(.okHE(okHE),.ep_addr(8'h08), .ep_dataout(ep08wire));
 
 okWireOut    wo2c(.okHE(okHE), .okEH(okEHx[ 12*65 +: 65 ]), .ep_addr(8'h2c), .ep_datain(ep2cwire)); // first 16 bits
 okWireOut    wo2d(.okHE(okHE), .okEH(okEHx[ 13*65 +: 65 ]), .ep_addr(8'h2d), .ep_datain(ep2dwire)); // next 16 bits
@@ -335,6 +346,8 @@ Sync Sync_1(
 	.clki(sys_clk),
 	.wake_up(wake_up),
 	.comp_out(comp_out),
+	.pkt_duration(pkt_duration),
+	.delay(delay),
 	.WU_valid(WU_valid),
 	.T_0(T_0),
 	.T_1(T_1),
