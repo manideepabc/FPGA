@@ -77,7 +77,6 @@ module Sync(
 				sys_clk_cnt <= datarate_div/2 - 1;  //delay is in 10ns step. So, delay = 10 means 100ns time delayed
 				data_clk_cnt <= 0;
 				WU_valid <= 0; //--once wakeup is serviced and finding the first rising edge on the stage 2, do not care about any more rising edges(they are noisy spikes)
-				WU_serviced <= 0;
 			end
 			
 			//1MHz data clock
@@ -96,7 +95,6 @@ module Sync(
 			if(data_clk_cnt == pkt_duration) begin  //pkt_duration is in microsecond
 					data_clk_enb <= 0;
 					data_clk_cnt <= 0;
-					WU_serviced <= 1;
 			end
 		end
 		

@@ -219,6 +219,7 @@ okWireIn     wi06(.okHE(okHE),.ep_addr(8'h06), .ep_dataout(ep06wire));
 okWireIn     wi07(.okHE(okHE),.ep_addr(8'h07), .ep_dataout(ep07wire));
 okWireIn     wi08(.okHE(okHE),.ep_addr(8'h08), .ep_dataout(ep08wire));
 okWireIn     wi09(.okHE(okHE),.ep_addr(8'h09), .ep_dataout(ep09wire)); 
+okWireIn     wi0a(.okHE(okHE),.ep_addr(8'h0a), .ep_dataout(ep0awire));
 
 okWireOut    wo20(.okHE(okHE), .okEH(okEHx[ 0*65 +: 65 ]), .ep_addr(8'h20), .ep_datain(ep20wire));
 okWireOut    wo21(.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h21), .ep_datain(ep21wire));
