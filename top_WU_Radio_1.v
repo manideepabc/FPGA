@@ -62,6 +62,7 @@ module top_WU_Radio_1(
 	 output wire T_1,
 	 output wire T_0,
 	 output wire trig_to_siggen,
+	 output wire bs_switch,
 //	 output wire comp_in,
 //  output wire duty_cycle
 	 
@@ -358,7 +359,8 @@ Sync Sync_1(
 	.WU_valid(WU_valid),
 	.T_0(T_0),
 	.T_1(T_1),
-	.data_clk_enb(data_clk_enb)
+	.data_clk_enb(data_clk_enb),
+	.bs_switch(bs_switch)
 );
 
 Siggen_trigger Siggen_trigger_1(

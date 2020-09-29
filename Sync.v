@@ -28,7 +28,8 @@ module Sync(
 	 output reg WU_valid,
 	 output reg T_0,
 	 output reg T_1,
-	 output reg data_clk_enb
+	 output reg data_clk_enb,
+	 output reg bs_switch
 	 );
 
 	initial WU_valid = 0;
@@ -57,6 +58,7 @@ module Sync(
 				WU_valid <= 1;
 				tim_count <= 0;
 				tim_enb <= 1;
+				bs_switch <= 0;  //very careful -- negating logic for the switch
 			end
 			
 			//Timeout setting - 200us == 100e6*200e-6 = 20000 ticks -- avoiding false stage 2 triggers
@@ -66,7 +68,7 @@ module Sync(
 	/*		if (tim_count > 30000) begin
 				WU_valid <= 0;
 			end*/
-			if(tim_count == 1000000) begin
+			if(tim_count == 100000) begin
 				tim_enb <= 0;
 				WU_valid <= 0;
 			end
@@ -95,6 +97,7 @@ module Sync(
 			if(data_clk_cnt == pkt_duration) begin  //pkt_duration is in microsecond
 					data_clk_enb <= 0;
 					data_clk_cnt <= 0;
+					bs_switch <= 1;
 			end
 		end
 		
@@ -104,6 +107,7 @@ module Sync(
 				WU_valid <= 1;
 				tim_count <= 0;
 				tim_enb <= 1;
+				bs_switch <= 0;
 			end
 			
 			//Timeout setting - 200us == 100e6*200e-6 = 20000 ticks -- avoiding false stage 2 triggers
@@ -140,6 +144,7 @@ module Sync(
 					data_clk_enb <= 0;
 					data_clk_cnt <= 0;
 					WU_serviced <= 1;
+					bs_switch <= 1;
 			end
 			
 		end
